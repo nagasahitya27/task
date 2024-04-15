@@ -1,0 +1,284 @@
+<html>
+<head>
+    <title>Tax Calculator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+        .container {
+			max-width: 400px;
+			margin: 0 auto;
+			margin-top:50px;
+			padding-top: 100px;
+			padding-bottom: 50px;
+			padding-left: 80px;
+			border-radius: 5px;
+			border-style: groove;
+			display: block;
+		}
+
+		.result-box {
+			max-width: 500px;
+			margin: 0 auto;
+			padding: 30px;
+			background-color: #fff;
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+			border-radius: 8px;
+			text-align: center;
+			position: fixed;
+			top: 150px;
+			left: 50%;
+			transform: translateX(-50%);
+			border-style: groove; 
+			
+		}
+
+		.result-box p {
+			font-size: 18px;
+			margin-bottom: 20px;
+		}
+
+		.result-box #overallIncome {
+			font-size: 24px;
+			font-weight: bold;
+		}
+
+		.result-box #closeBtn {
+			display: inline-block;
+			background-color: #007bff;
+			color: #fff;
+			padding: 10px 20px;
+			border: none;
+			border-radius: 4px;
+			font-size: 16px;
+			cursor: pointer;
+		}
+
+		.result-box #closeBtn:hover {
+			background-color: #0056b3;
+		}
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-control {
+            display: block;
+            width: 80%; 
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box; 
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-group-append {
+            position: absolute;
+            right: 90px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .tooltip-btn {
+            position: relative;
+            cursor: pointer;
+            margin-left: 5px;
+        }
+
+        .tooltip-text {
+            visibility: hidden;
+            width: 200px;
+            background-color: black;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 150%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tooltip-btn:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .btn {
+            display: block;
+            width: 80%;
+            padding: 10px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        
+    </style>
+</head>
+<body>
+
+<div id="container" class="container">
+    <form id="taxForm">
+        <div class="form-group">
+            <label for="gross-annual-income">Enter gross annual income
+                <span class="tooltip-btn">
+                    <i class="fas fa-question-circle"></i>
+                    <span class="tooltip-text">Gross annual income is your total salary in a year before any deductions</span>
+                </span>
+            </label>
+            <div class="input-group">
+                <input type="text" class="form-control" id="gross-annual-income" placeholder="Enter gross annual income">
+                <div class="input-group-append">
+                    <span class="input-group-text tooltip-btn error-icon">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <span class="tooltip-text error-tooltip">Please enter numbers only</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="extra-income">Enter extra income
+                <span class="tooltip-btn">
+                    <i class="fas fa-question-circle"></i>
+                    <span class="tooltip-text">Extra income includes any additional earnings from sources other than your primary salary.</span>
+                </span>
+            </label>
+            <div class="input-group">
+                <input type="text" class="form-control" id="extra-income" placeholder="Enter extra income from other sources">
+                <div class="input-group-append">
+                    <span class="input-group-text tooltip-btn error-icon">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <span class="tooltip-text error-tooltip">Please enter numbers only</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="age-group">Enter age group
+                <span class="tooltip-btn">
+                    <i class="fas fa-question-circle"></i>
+                    <span class="tooltip-text">Specify your age group as per the predefined categories.</span>
+                </span>
+            </label>
+            <div class="input-group">
+                <select class="form-control" id="age-group">
+                    <option value="<40">&lt;40</option>
+                    <option value=">=40&<60">&ge;40 &lt;60</option>
+                    <option value=">=60">&ge;60</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="total-deductions">Enter total applicable deductions
+                <span class="tooltip-btn">
+                    <i class="fas fa-question-circle"></i>
+                    <span class="tooltip-text">Total applicable deductions include all deductions subtracted from your gross income.</span>
+                </span>
+            </label>
+            <div class="input-group">
+                <input type="text" class="form-control" id="total-deductions" placeholder="Add total applicable deductions">
+                <div class="input-group-append">
+                    <span class="input-group-text tooltip-btn error-icon">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <span class="tooltip-text error-tooltip">Please enter numbers only</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+<div id="resultBox" class="result-box" style="display: none;">
+    <h1>Your overall income will be <h1>
+	<span id="overallIncome"></span> 
+	<h4>after tax deductions</h4>
+    <button id="closeBtn">Close</button>
+</div>
+
+<script>
+    document.getElementById('taxForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const grossAnnualIncome = parseFloat(document.getElementById('gross-annual-income').value);
+        const extraIncome = parseFloat(document.getElementById('extra-income').value);
+        const ageGroup = document.getElementById('age-group').value;
+        const totalDeductions = parseFloat(document.getElementById('total-deductions').value);
+
+        const errorIcons = document.querySelectorAll('.error-icon');
+        const errorTooltips = document.querySelectorAll('.error-tooltip');
+        let hasErrors = false;
+
+        errorIcons.forEach(icon => icon.style.visibility = 'hidden');
+
+        if (isNaN(grossAnnualIncome)) {
+            errorIcons[0].style.visibility = 'visible';
+            errorTooltips[0].textContent = 'Please enter a valid number';
+            hasErrors = true;
+        }
+
+        if (isNaN(extraIncome)) {
+            errorIcons[1].style.visibility = 'visible';
+            errorTooltips[1].textContent = 'Please enter a valid number';
+            hasErrors = true;
+        }
+
+        if (isNaN(totalDeductions)) {
+            errorIcons[2].style.visibility = 'visible';
+            errorTooltips[2].textContent = 'Please enter a valid number';
+            hasErrors = true;
+        }
+
+        if (!hasErrors) {
+            let totalIncome = grossAnnualIncome + extraIncome - totalDeductions;
+            let tax = 0;
+
+            if (totalIncome > 800000) {
+                if (ageGroup === '<40') {
+                    tax = 0.3 * (totalIncome - 800000);
+                } else if (ageGroup === '>=40&<60') {
+                    tax = 0.4 * (totalIncome - 800000);
+                } else if (ageGroup === '>=60') {
+                    tax = 0.1 * (totalIncome - 800000);
+                }
+            }
+
+            const overallIncome = totalIncome - tax;
+
+            const overallIncomeSpan = document.getElementById('overallIncome');
+            overallIncomeSpan.textContent = overallIncome.toFixed(2);
+            document.getElementById('resultBox').style.display = 'block';
+            document.getElementById('container').style.display = 'none'; 
+        }
+    });
+
+    document.getElementById('closeBtn').addEventListener('click', function() {
+        document.getElementById('resultBox').style.display = 'none';
+        document.getElementById('container').style.display = 'block'; 
+    });
+</script>
+
+
+</body>
+
+</html>
+ 
+ 
+ 
